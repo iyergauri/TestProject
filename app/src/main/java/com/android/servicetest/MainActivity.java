@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public void starter(View view) {
         Intent intent = new Intent(MainActivity.this, DemoService.class);
         startService(intent);
+        EditText text = (EditText) findViewById(R.id.textTest);
     }
 
     public void stopper(View view) {
