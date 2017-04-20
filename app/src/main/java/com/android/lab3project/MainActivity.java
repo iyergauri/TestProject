@@ -1,6 +1,7 @@
 package com.android.lab3project;
 
 import android.os.Bundle;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    String name = "myUserName";
+    EditText inputName;
+    String info = "Info:\n1234 An Address, City, CA 92092\n(408) 123-4567";
+    String err = "username not found";
+
+    TextView text;
+    Button display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,12 +30,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        text = (TextView)findViewById(R.id.textDisplay);
+
+        SharedPreferences sharedPrefs = getSharedPreferences("user_name", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPrefs.edit();
+        edit.putString("usernameKey", name);
+        edit.apply();
+
+        inputName = (EditText) findViewById(R.id.nameText);
+        display = (Button) findViewById(R.id.displayButton);
+        display.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                display();
             }
         });
     }
@@ -33,6 +52,19 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+
+
+    public void display() {
+        SharedPreferences sharedPrefs = getSharedPreferences("user_name", MODE_PRIVATE);
+        String prefName = sharedPrefs.getString("usernameKey", "");
+        String inputText = inputName.getText().toString();
+        if (prefName.equals(inputText)) {
+            text.setText(info);
+        } else {
+            text.setText("prefName inputText = " + prefName + inputText);
+        }
     }
 
     @Override
