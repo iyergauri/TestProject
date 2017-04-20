@@ -20,7 +20,7 @@ public class StartedService extends Service {
         public void run() {
             SharedPreferences prefs = getSharedPreferences("newPrefs", MODE_PRIVATE);
             SharedPreferences.Editor edit = prefs.edit();
-            edit.putString("name", "Example Name");
+            edit.putString("nameKey", "StartedService Name");
             edit.apply();
 
             synchronized (this) {

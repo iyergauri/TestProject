@@ -31,16 +31,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+
+        // set text
         text = (TextView)findViewById(R.id.textDisplay);
 
+        // add the only acceptable username to SharedPrefs
         SharedPreferences sharedPrefs = getSharedPreferences("user_name", MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPrefs.edit();
         edit.putString("usernameKey", name);
         edit.apply();
 
+        // check if input is acceptable username
         inputName = (EditText) findViewById(R.id.nameText);
         display = (Button) findViewById(R.id.displayButton);
         display.setOnClickListener(new View.OnClickListener() {
@@ -50,14 +52,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // print username from StartedService
+        Intent intent = new Intent(MainActivity.this, StartedService.class);
+        startService(intent);
+
         newDisplay = (Button) findViewById((R.id.serviceData));
         newDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newText = (TextView) findViewById(R.id.newText);
                 SharedPreferences prefs = getSharedPreferences("newPrefs", MODE_PRIVATE);
-                String name = prefs.getString("name", "");
-                newText.setText("test" + name);
+                String serviceName = prefs.getString("nameKey", "");
+                newText.setText(serviceName);
             }
         });
     }
