@@ -1,5 +1,6 @@
 package com.android.lab3project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
@@ -15,13 +16,16 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    String name = "myUserName";
+    String name = "user";
     EditText inputName;
     String info = "Info:\n1234 An Address, City, CA 92092\n(408) 123-4567";
     String err = "username not found";
 
     TextView text;
     Button display;
+    Button newDisplay;
+
+    TextView newText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,17 @@ public class MainActivity extends AppCompatActivity {
                 display();
             }
         });
+
+        newDisplay = (Button) findViewById((R.id.serviceData));
+        newDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newText = (TextView) findViewById(R.id.newText);
+                SharedPreferences prefs = getSharedPreferences("newPrefs", MODE_PRIVATE);
+                String name = prefs.getString("name", "");
+                newText.setText("test" + name);
+            }
+        });
     }
 
     @Override
@@ -61,9 +76,10 @@ public class MainActivity extends AppCompatActivity {
         String prefName = sharedPrefs.getString("usernameKey", "");
         String inputText = inputName.getText().toString();
         if (prefName.equals(inputText)) {
-            text.setText(info);
+            String displayInfo = "User '" + prefName + "' " + info;
+            text.setText(displayInfo);
         } else {
-            text.setText("prefName inputText = " + prefName + inputText);
+            text.setText("Username '" + inputText + "' not found! ");
         }
     }
 
